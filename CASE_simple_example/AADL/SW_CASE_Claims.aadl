@@ -1,0 +1,50 @@
+package SW_CASE_Claims
+public
+--	with Model_Transformations
+
+
+	annex resolute {**
+
+		-- This connects to evidence that AGREE was previously run on the current version of the design.
+--		agree_prop_checked() <=
+--			** "AGREE properties passed" **
+--			analysis("AgreeCheck")
+
+		test_cls(c:component, s:string) <=
+		** "test_cls" **
+		has_agree_property(c,s)
+		
+		test_impl(c:component, s:string) <=
+		** "test_impl" **
+		has_agree_property(c,s) and is_assume(agree_property(c,s))
+		
+		test_text(c:component, s:string) <=
+		** "test_text" **
+		has_agree_property(c,s) and test_text2(agree_property(c,s),c)
+		
+		test_text2(a:agree_spec,c:component) <=
+		** "agree_spec" **
+		test_text3(agree_property_description(a)) and test_text4(c)
+		
+		test_text3(s:string) <=
+		** s **
+		true
+		
+		test_text4(c:component) <=
+		** "text_text4" **
+		-- get incoming connections of type Command
+		let as : {agree_spec} = {a for (a : agree_properties(c))};
+			-- show that all of these connections come from a filter
+			forall(spec : as). is_assume(spec)
+		
+		
+
+		well_formed(c:component, s:string) <=
+			** "The FlightPlanner shall receive a well-formed command from the GroundStation" **
+--			has_agree_property(c,s)
+--			agree_prop_checked()
+true
+	**};
+	
+
+end SW_CASE_Claims;
